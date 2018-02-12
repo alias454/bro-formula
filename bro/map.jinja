@@ -1,0 +1,73 @@
+# Default settting for base_dir 
+{% set base_dir = salt['pillar.get']('bro:lookup:bro:base_dir', '/opt/bro') %}
+
+# Set default bro settings
+{% set default_config = salt.grains.filter_by({
+  'default':
+  {
+    'bro':
+    {
+      'install_type': 'package',
+      'repo_baseurl': 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/',
+      'repo_gpgkey': 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/repodata/repomd.xml.key',
+      'base_dir': base_dir,
+      'MailTo': 'root@localhost',
+      'SendMail': '/sbin/sendmail',
+      'MailConnectionSummary': '1',
+      'MinDiskSpace': '5',
+      'MailHostUpDown': '1',
+      'LogRotationInterval': '3600',
+      'LogExpireInterval': '0',
+      'StatsLogEnable': '1',
+      'StatsLogExpireInterval': '0',
+      'StatusCmdShowAll': '0',
+      'CrashExpireInterval': '0',
+      'SitePolicyScripts': 'local.bro',
+      'LogDir': base_dir + '/logs',
+      'SpoolDir': base_dir + '/spool',
+      'CfgDir': base_dir + '/etc',
+      'ShareDir': base_dir + '/share/bro',
+      'bpf':
+       {
+        'use_BPFconf': 'True',
+        'bpf_rules': [],
+       },
+      'optional':
+      {
+        'use_LibgeoIP': 'False',
+        'use_sendmail': 'False',
+        'relayhost': 'mail.domain.tld',
+      },
+      'interfaces':
+      {
+        'ip_binary_path': '/sbin/ip',
+        'management': 'eth0',
+        'capture': 
+        {
+          'device_names': 'eth1',
+          'enable_tx': '0',
+          'min_num_slots': '4096',
+        },
+      },
+    },
+  },
+  'host00':
+  {		
+    'bro':
+    {
+      'interfaces':
+      {
+        'management': 'eth0',
+        'capture': 
+        {
+          'device_names': 'eth1',
+          'enable_tx': '0',
+          'min_num_slots': '32768',
+        },
+      },
+    },
+  },
+}, grain='host', base='default') %}
+
+# Merge the default settings with pillar data
+{% set host_lookup = salt['pillar.get']('bro:lookup', default=default_config, merge=True) %}
