@@ -6,18 +6,22 @@ bro:
       repo_gpgkey: 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/repodata/repomd.xml.key'
       install_type: 'package'                # Install type can be package (support for tarball not implemented) 
       base_dir: '/opt/bro'                   # /opt/bro is default for package install
-      MailTo': 'root@localhost'              # Recipient address for all emails sent out by Bro and BroControl
-      SendMail': '/sbin/sendmail'            # Path to sendmail binary
-      MailConnectionSummary': '1'            # Send mail connection summaries
-      MinDiskSpace': '5'                     # Threshold (in percentage of disk space) for HDD where SpoolDir lives
-      MailHostUpDown': '1'                   # Send mail when "broctl cron" notices a host in the cluster has changed
-      LogRotationInterval': '3600'           # Log rotation interval in seconds for current logs
-      LogExpireInterval': '0'                # Files older than this will be deleted by "broctl cron" 0 is never
-      StatsLogEnable': '1'                   # Enable BroControl to write statistics to the stats.log file
-      StatsLogExpireInterval': '0'           # Number of days that entries in the stats.log file are kept
-      StatusCmdShowAll': '0'                 # Show all output of the broctl status command
-      CrashExpireInterval': '0'              # Number of days that crash directories are kept
-      SitePolicyScripts': 'local.bro'        # Site-specific policy script to load
+      MailTo: 'root@localhost'               # Recipient address for all emails sent out by Bro and BroControl
+      SendMail: '/sbin/sendmail'             # Path to sendmail binary
+      MailConnectionSummary: '1'             # Send mail connection summaries
+      MinDiskSpace: '5'                      # Threshold (in percentage of disk space) for HDD where SpoolDir lives
+      MailHostUpDown: '1'                    # Send mail when "broctl cron" notices a host in the cluster has changed
+      LogRotationInterval: '3600'            # Log rotation interval in seconds for current logs
+      LogExpireInterval: '0'                 # Files older than this will be deleted by "broctl cron" 0 is never
+      StatsLogEnable: '1'                    # Enable BroControl to write statistics to the stats.log file
+      StatsLogExpireInterval: '0'            # Number of days that entries in the stats.log file are kept
+      StatusCmdShowAll: '0'                  # Show all output of the broctl status command
+      CrashExpireInterval: '0'               # Number of days that crash directories are kept
+      SitePolicyScripts: 'local.bro'         # Site-specific policy script to load
+      mode: 'lb_cluster'                     # Mode can be standalone or lb_cluster (load balanced cluster) 
+      use_pfring: 'True'                     # If pf_ring is installed set this to True
+      lb_method: 'pf_ring'                   # Load balancer type. Currently only pf_ring is supported
+      lb_procs: '1'                          # Number of processors to run BRO workers with
       bpf:
         use_BPFconf: 'True'                  # Use Berkeley Packet Filter(BPF) on capture interfaces
         bpf_rules: []                        # Add custom BPF rules
