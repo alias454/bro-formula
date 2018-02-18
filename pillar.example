@@ -29,7 +29,7 @@ bro:
         use_LibgeoIP: 'False'                # Use LibgeoIP(less useful if sending logs upstream)
         use_sendmail: 'False'                # Use sendmail(needs sendmail/postfix to be installed)
         relayhost: 'mail.domain.tld'         # Send email to a relay host
-      interfaces':
+      interfaces:
         ip_binary_path: '/sbin/ip'           # path to ip binary for managing 
         management: 'eth0'                   # Management interface name
         capture: 

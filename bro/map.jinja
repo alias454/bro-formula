@@ -27,11 +27,15 @@
       'SpoolDir': base_dir + '/spool',
       'CfgDir': base_dir + '/etc',
       'ShareDir': base_dir + '/share/bro',
+      'mode': 'standalone',
+      'use_pfring': 'False',
+      'lb_method': 'pf_ring',
+      'lb_procs': '1',
       'bpf':
-       {
+      {
         'use_BPFconf': 'True',
         'bpf_rules': [],
-       },
+      },
       'optional':
       {
         'use_LibgeoIP': 'False',

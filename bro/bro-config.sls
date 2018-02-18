@@ -73,7 +73,6 @@ network_configure_{{ config.bro.interfaces.capture.device_names }}:
     - type: eth
     - proto: none
     - autoneg: on
-    - speed: 1000
     - duplex: full
     - rx: off
     - tx: off
