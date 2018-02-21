@@ -13,7 +13,7 @@ Formulas exist to help with installation and management of
 other components such as pf_ring.
 
 pfring-formula
-https://github.com/alias454/pfring-formula
+https://github.com/saltstack-formulas/pfring-formula
 
 
 Available states
