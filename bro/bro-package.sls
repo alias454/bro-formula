@@ -6,7 +6,9 @@ package-install-bro:
   pkg.installed:
     - pkgs:
       - bro
+      - broctl
     - refresh: True
+    - skip_verify: {{ config.package.skip_verify }}
     - require_in:
       - service: service-bro
 

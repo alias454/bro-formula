@@ -7,12 +7,18 @@
     - group: root
     - mode: '0644'
     - contents: |
-        if [ -d "{{ config.bro.base_dir }}/bin" ]; then
-            PATH={{ config.bro.base_dir }}/bin:$PATH
+        if [ -d "{{ config.bro.BinDir }}" ]; then
+            PATH={{ config.bro.BinDir }}:$PATH
         fi
 
+# Create group as a system group 
+group-manage-bro:
+  group.present:
+    - name: bro
+    - system: True
+
 # Manage the <bro_base>/share/bro/site/local.bro file
-{{ config.bro.ShareDir }}//site/local.bro:
+{{ config.bro.ShareDir }}/site/local.bro:
   file.managed:
     - source: salt://bro/files/local.site
     - template: jinja
@@ -118,11 +124,12 @@ network_configure_{{ config.bro.interfaces.capture.device_names }}:
         After=network.target
 
         [Service]
-        ExecStartPre=-{{ config.bro.base_dir }}/bin/broctl cleanup
-        ExecStartPre={{ config.bro.base_dir }}/bin/broctl check
-        ExecStartPre={{ config.bro.base_dir }}/bin/broctl install
-        ExecStart={{ config.bro.base_dir }}/bin/broctl start
-        ExecStop={{ config.bro.base_dir }}/bin/broctl stop
+        ExecStartPre=-{{ config.bro.BinDir }}/broctl cleanup
+        ExecStartPre={{ config.bro.BinDir }}/broctl check
+        ExecStartPre={{ config.bro.BinDir }}/broctl install
+        ExecStartPre={{ config.bro.BinDir }}/broctl deploy
+        ExecStart={{ config.bro.BinDir }}/broctl start
+        ExecStop={{ config.bro.BinDir }}/broctl stop
         RestartSec=10s
         Type=oneshot
         RemainAfterExit=yes

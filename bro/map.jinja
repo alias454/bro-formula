@@ -1,4 +1,4 @@
-# Default settting for base_dir 
+# Default setting for base_dir
 {% set base_dir = salt['pillar.get']('bro:lookup:bro:base_dir', '/opt/bro') %}
 
 # Set default bro settings
@@ -8,8 +8,6 @@
     'bro':
     {
       'install_type': 'package',
-      'repo_baseurl': 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/',
-      'repo_gpgkey': 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/repodata/repomd.xml.key',
       'base_dir': base_dir,
       'MailTo': 'root@localhost',
       'SendMail': '/sbin/sendmail',
@@ -23,6 +21,7 @@
       'StatusCmdShowAll': '0',
       'CrashExpireInterval': '0',
       'SitePolicyScripts': 'local.bro',
+      'BinDir': base_dir + '/bin',
       'LogDir': base_dir + '/logs',
       'SpoolDir': base_dir + '/spool',
       'CfgDir': base_dir + '/etc',
@@ -72,6 +71,30 @@
     },
   },
 }, grain='host', base='default') %}
+
+# Get settings for os_family
+{% set os_lookup = {
+  'RedHat':
+  {
+    'package':
+    {
+      'skip_verify': '0',
+      'repo_baseurl': 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/',
+      'repo_gpgkey': 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/repodata/repomd.xml.key',
+    }
+  },
+  'Debian':
+  {
+    'package':
+    {
+      'use_repo': 'False',
+      'skip_verify': '0',
+      'repo_baseurl': 'deb http://download.opensuse.org/repositories/network:/bro/Debian_8.0/',
+      'repo_gpgkey': 'http://download.opensuse.org/repositories/network:bro/Debian_8.0/Release.key',
+    }
+  }
+} %}
+{% set os_map = os_lookup.get(grains.os_family, {}) %} 
 
 # Merge the default settings with pillar data
 {% set host_lookup = salt['pillar.get']('bro:lookup', default=default_config, merge=True) %}

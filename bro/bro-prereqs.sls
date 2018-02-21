@@ -5,7 +5,7 @@
 package-install-epel-bro:
   pkg.installed:
     - pkgs:
-      - epel-release             # Base install
+      - epel-release          # Base install
     - refresh: True
 
 # Install prereqs for RHEL based systems
@@ -34,6 +34,15 @@ package-install-LibgeoIP-bro:
       - GeoIP-devel
       - GeoIP-data
     - refresh: True
-{% endif %} # End install_type
 {% endif %} # End LibgeoIP
-{% endif %} # End ReHat
+{% endif %} # End install_type
+
+# Install prereqs for Debian based systems
+{% elif salt.grains.get('os_family') == 'Debian' %}
+package-install-prereqs-bro:
+  pkg.installed:
+    - pkgs:
+       - curl
+       - gawk
+    - refresh: True
+{% endif %} # End RedHat/Debian

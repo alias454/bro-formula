@@ -1,11 +1,19 @@
 # BRO docs https://www.bro.org/documentation/index.html
 bro:
   lookup:
-    bro:
+    package:
+    {% if grains['os_family'] == 'RedHat' %}
       repo_baseurl: 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/'
       repo_gpgkey: 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/repodata/repomd.xml.key'
+      skip_verify: '0'
+    {% elif grains['os_family'] == 'Debian' %}
+      use_repo: 'False'                      # Debian 9 does not require an external repo
+      repo_baseurl: 'deb http://download.opensuse.org/repositories/network:/bro/Debian_8.0/'
+      repo_gpgkey: 'http://download.opensuse.org/repositories/network:bro/Debian_8.0/Release.key'
+      skip_verify: '0'
+    {% endif %}
+    bro:
       install_type: 'package'                # Install type can be package (support for tarball not implemented) 
-      base_dir: '/opt/bro'                   # /opt/bro is default for package install
       MailTo: 'root@localhost'               # Recipient address for all emails sent out by Bro and BroControl
       SendMail: '/sbin/sendmail'             # Path to sendmail binary
       MailConnectionSummary: '1'             # Send mail connection summaries
@@ -18,10 +26,20 @@ bro:
       StatusCmdShowAll: '0'                  # Show all output of the broctl status command
       CrashExpireInterval: '0'               # Number of days that crash directories are kept
       SitePolicyScripts: 'local.bro'         # Site-specific policy script to load
+    {% if grains['os_family'] == 'RedHat' %}
+      base_dir: '/opt/bro'                   # /opt/bro is default for yum package install
+    {% elif grains['os_family'] == 'Debian' %}
+      base_dir: '/usr/bin'                   # /usr/bin is default for deb package install
+      BinDir: '/usr/bin'                     # Default location of executables on Debian
+      LogDir: '/var/log/bro'                 # Default location of log directory on Debian
+      SpoolDir: '/var/spool/bro'             # Default location of spool directory on Debian
+      CfgDir: '/etc/bro'                     # Default config directory location for Debian
+      ShareDir: '/usr/share/bro'             # Location of shared resources (site local)
+    {% endif %}
       mode: 'lb_cluster'                     # Mode can be standalone or lb_cluster (load balanced cluster) 
       use_pfring: 'True'                     # If pf_ring is installed set this to True
       lb_method: 'pf_ring'                   # Load balancer type. Currently only pf_ring is supported
-      lb_procs: '1'                          # Number of processors to run BRO workers with
+      lb_procs: '2'                          # Number of processors to run BRO workers with
       bpf:
         use_BPFconf: 'True'                  # Use Berkeley Packet Filter(BPF) on capture interfaces
         bpf_rules: []                        # Add custom BPF rules
@@ -31,8 +49,8 @@ bro:
         relayhost: 'mail.domain.tld'         # Send email to a relay host
       interfaces:
         ip_binary_path: '/sbin/ip'           # path to ip binary for managing 
-        management: 'eth0'                   # Management interface name
+        management: 'ens192'                 # Management interface name
         capture: 
-          device_names: 'eth1'               # Capture interface name (currently only supports 1 interface)
+          device_names: 'ens224'             # Capture interface name (currently only supports 1 interface)
           enable_tx: '0'                     # Enable tx send on this interface (default is 0)
           min_num_slots: '4096'              # Min Slots check support on card using ethtool -g eth1
