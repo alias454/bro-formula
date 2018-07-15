@@ -7,7 +7,6 @@
   {
     'bro':
     {
-      'install_type': 'package',
       'base_dir': base_dir,
       'MailTo': 'root@localhost',
       'SendMail': '/sbin/sendmail',
@@ -78,6 +77,8 @@
   {
     'package':
     {
+      'install_type': 'package',
+      'use_repo': 'False',
       'skip_verify': '0',
       'repo_baseurl': 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/',
       'repo_gpgkey': 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/repodata/repomd.xml.key',
@@ -87,6 +88,7 @@
   {
     'package':
     {
+      'install_type': 'package',
       'use_repo': 'False',
       'skip_verify': '0',
       'repo_baseurl': 'deb http://download.opensuse.org/repositories/network:/bro/Debian_8.0/',
@@ -95,6 +97,9 @@
   }
 } %}
 {% set os_map = os_lookup.get(grains.os_family, {}) %} 
+
+# update the default config with os specific settings
+{% do default_config.update(os_map) %}
 
 # Merge the default settings with pillar data
 {% set host_lookup = salt['pillar.get']('bro:lookup', default=default_config, merge=True) %}
