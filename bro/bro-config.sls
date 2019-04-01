@@ -26,15 +26,6 @@ group-manage-bro:
     - group: bro
     - mode: '0664'
 
-# Manage the <bro_base>/etc/broccli.conf file
-{{ config.bro.CfgDir }}/broccoli.conf:
-  file.managed:
-    - source: salt://bro/files/broccli.conf
-    - template: jinja
-    - user: root
-    - group: bro
-    - mode: '0664'
-
 # Manage the <bro_base>/etc/broctl.cfg
 {{ config.bro.CfgDir }}/broctl.cfg:
   file.managed:

@@ -6,7 +6,6 @@ service-bro:
     - name: bro
     - enable: True
     - watch:
-      - file: {{ config.bro.CfgDir }}/broccoli.conf
       - file: {{ config.bro.CfgDir }}/broctl.cfg
       - file: {{ config.bro.CfgDir }}/node.cfg
       - file: {{ config.bro.CfgDir }}/networks.cfg
