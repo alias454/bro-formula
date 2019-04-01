@@ -8,6 +8,9 @@
     'bro':
     {
       'base_dir': base_dir,
+      'use_BroPKG': 'False',
+      'python_pip_pkg': 'python36-pip',
+      'python_pip_cmd': 'pip3',
       'MailTo': 'root@localhost',
       'SendMail': '/sbin/sendmail',
       'MailConnectionSummary': '1',
@@ -27,6 +30,7 @@
       'ShareDir': base_dir + '/share/bro',
       'mode': 'standalone',
       'use_pfring': 'False',
+      'use_afpacket': 'False',
       'lb_method': 'pf_ring',
       'lb_procs': '1',
       'bpf':

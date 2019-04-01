@@ -2,7 +2,7 @@
 bro-formula
 ================
 
-A saltstack formula to install BRO Network Security Monitor on RHEL or Debian based systems.
+A saltstack formula to install BRO/Zeek Network Security Monitor on RHEL or Debian based systems.
 
 Supports one capture interface at the moment. Adding ability to control multiple capture interfaces is on the TODO list
 
@@ -55,6 +55,10 @@ If using sendmail(postfix), manage relay host and service
 ``bro-service``
 ------------
 Manage bro service and a service to manage promiscuous mode of defined network interfaces on RHEL/CentOS 7/Debian systems
+
+``bro-bropkg``
+------------
+Manage bro-pkg pip module and plugin installations.
 
 ``bro-cron``
 ------------

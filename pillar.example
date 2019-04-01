@@ -6,7 +6,7 @@ bro:
       install_type: 'local'                         # Install type can be package or local (support for tarball not implemented) 
       local_package:                                # Can be multiple packages like bro, broctl, broccoli etc.
         - pack_id: 'bro-full'
-          package: 'Bro-2.5-725-Linux-x86_64'       # Custom package to be deployed
+          package: 'Bro-2.6-195-Linux-x86_64'       # Custom package to be deployed
           name: 'bro'                               # Name of installed package
           type: 'rpm'                               # Type should be deb or rpm based on platform
       use_repo: 'False'                             # Bro can be installed from epel or a local rpm not just bro repos
@@ -20,8 +20,12 @@ bro:
       repo_gpgkey: 'http://download.opensuse.org/repositories/network:bro/Debian_8.0/Release.key'
       skip_verify: '0'
     {% endif %}
-    {% endif %}
     bro:
+      use_BroPKG: 'True'                     # Use bro-pkg to manage plugins (requird for plugins such as af_packet etc)
+      python_pip_pkg: 'python36-pip'         # Can be pip or pip3 but only gets installed if use_BroPKG == True
+      python_pip_cmd: 'pip3'                 # Otherwise, the pip install is skipped and bro-pkg is not configured
+      addon_plugins:                         # List of plugins to install if bro-pkg is enabled 
+        - plugin: 'bro-af_packet-plugin'     # af_packet is required when use_afpacket == True
       MailTo: 'root@localhost'               # Recipient address for all emails sent out by Bro and BroControl
       SendMail: '/sbin/sendmail'             # Path to sendmail binary
       MailConnectionSummary: '1'             # Send mail connection summaries
@@ -45,8 +49,9 @@ bro:
       ShareDir: '/usr/share/bro'             # Location of shared resources (site local)
     {% endif %}
       mode: 'lb_cluster'                     # Mode can be standalone or lb_cluster (load balanced cluster) 
-      use_pfring: 'True'                     # If pf_ring is installed set this to True
-      lb_method: 'pf_ring'                   # Load balancer type. Currently only pf_ring is supported
+      use_pfring: 'False'                    # If pf_ring is installed set this to True. Must use "pf_ring" lb_method
+      use_afpacket: 'True'                   # If you use AF_PACKET set this to True. Must use "custom" lb_method and use_BroPKG set to True
+      lb_method: 'custom'                    # Load balancer type ("pf_ring" or "custom" are supported)
       lb_procs: '2'                          # Number of processors to run BRO workers with
       bpf:
         use_BPFconf: 'True'                  # Use Berkeley Packet Filter(BPF) on capture interfaces
