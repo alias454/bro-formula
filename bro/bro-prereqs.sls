@@ -14,13 +14,11 @@ package-install-prereqs-bro:
     - pkgs:
        - curl
        - gawk
-       - python-devel
-       - openssl-devel
+       - bind-utils
        - gperftools
-       - libpcap-devel
     - refresh: True
 
-{% if config.bro.install_type == 'tarball' %}
+{% if config.package.install_type == 'tarball' %}
 # The BRO yum package does not support GeoIP
 # It must be configured at compile time.
 # In most cases this will not be an issue
@@ -44,5 +42,6 @@ package-install-prereqs-bro:
     - pkgs:
        - curl
        - gawk
+       - dnsutils
     - refresh: True
 {% endif %} # End RedHat/Debian
