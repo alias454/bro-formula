@@ -20,10 +20,23 @@ package-install-prereqs-bropkg:
 
 # Install prereqs for Debian based systems
 {% elif salt.grains.get('os_family') == 'Debian' %}
+
+# Set hard value for kernel incase
+# running container on a different platform
+{% if salt['grains.get']('virtual_subtype') == 'Docker' %}
+  {% if salt.grains.get('os') == 'Debian' %}
+    {% set kernelrelease = 'amd64' %} #'4.9.0-3-all'
+  {% elif salt.grains.get('os') == 'Ubuntu' %}
+    {% set kernelrelease = 'virtual' %}
+  {% endif %}
+{% else %}
+  {% set kernelrelease = salt['grains.get']('kernelrelease') %}
+{% endif %}
+
 package-install-prereqs-bropkg:
   pkg.installed:
     - pkgs:
-       - linux-headers-{{ kernel }}
+       - linux-headers-{{ kernelrelease }}
        - libpcap-dev
        - libssl-dev
        - python-dev
@@ -42,6 +55,7 @@ pip-install-bro:
     - refresh: True
     - unless: echo $(which bro-pkg) |grep "no bro-pkg"
     - require:
+      - pkg: package-install-prereqs-bropkg
       - pkg: package-install-bro
 
 # Upgrade older versions of pip
@@ -49,7 +63,7 @@ pip-upgrade-bro:
   cmd.run:
     - name: {{ config.bro.python_pip_cmd }} install --upgrade pip
     - onlyif: {{ config.bro.python_pip_cmd }} list --outdated |grep pip
-    - unless: echo $(which bro-pkg) |grep "no bro-pkg"
+    - runas: root
     - require:
       - pkg: pip-install-bro
 
@@ -57,27 +71,33 @@ pip-upgrade-bro:
 pip-package-install-bro-pkg:
   cmd.run:
     - name: {{ config.bro.python_pip_cmd }} install --upgrade bro-pkg
-    - onlyif: {{ config.bro.python_pip_cmd }} list --outdated |grep bro-pkg
+    #- onlyif: {{ config.bro.python_pip_cmd }} list --outdated |grep bro-pkg
     - unless: echo $(which bro-pkg) |grep "no bro-pkg"
+    - runas: root
     - require:
-      - pkg: package-install-bro
       - cmd: pip-upgrade-bro
 
 # Run autoconfig
 bro-pkg-autoconfig:
   cmd.run:
     - name: bro-pkg autoconfig
-    - creates: /root/.bro-pkg/config
+    - creates: /root/.bro-pkg/config # either .zkg or .bro-pkg
+    - unless: echo $(which bro-pkg) |grep "no bro-pkg"
+    - runas: root
     - require:
-      - cmd: pip-package-install-bro-pkg 
+      - cmd: pip-package-install-bro-pkg
 
 # Install plugins using bro-pkg
+{% if config.package.install_type != 'package' %}
 {% for pkg in config.bro.addon_plugins %}
 bro-pkg-install-{{ pkg.plugin }}:
   cmd.run:
-    - name: bro-pkg install {{ pkg.plugin }}
+    - name: bro-pkg install {{ pkg.plugin }} --force
     - unless: bro-pkg list installed |grep {{ pkg.plugin }}
+    - runas: root
     - require:
-      - cmd: pip-package-install-bro-pkg 
+      - cmd: pip-package-install-bro-pkg
+      - cmd: bro-pkg-autoconfig
 {% endfor %}
+{% endif %}
 {% endif %}
