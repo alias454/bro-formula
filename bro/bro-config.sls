@@ -62,6 +62,7 @@ group-manage-bro:
       - service: service-bro
         
 # Configure network options
+{% if config.bro.interfaces.capture.enable == 'True' %}
 network_configure_{{ config.bro.interfaces.capture.device_names }}:
   network.managed:
     - name: {{ config.bro.interfaces.capture.device_names }}
@@ -79,6 +80,7 @@ network_configure_{{ config.bro.interfaces.capture.device_names }}:
     - gso: off
     - gro: off
     - lro: off
+{% endif %}
 
 # Manage systemd unit file to control promiscuous mode
 /usr/lib/systemd/system/netcfg@.service:
@@ -116,8 +118,8 @@ network_configure_{{ config.bro.interfaces.capture.device_names }}:
 
         [Service]
         ExecStartPre=-{{ config.bro.BinDir }}/broctl cleanup
-        ExecStartPre={{ config.bro.BinDir }}/broctl check
-        ExecStartPre={{ config.bro.BinDir }}/broctl install
+        #ExecStartPre={{ config.bro.BinDir }}/broctl check
+        #ExecStartPre={{ config.bro.BinDir }}/broctl install
         ExecStartPre={{ config.bro.BinDir }}/broctl deploy
         ExecStart={{ config.bro.BinDir }}/broctl start
         ExecStop={{ config.bro.BinDir }}/broctl stop
