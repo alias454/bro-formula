@@ -1,7 +1,7 @@
-name: template
+name: bro
 os: Debian, Ubuntu, RedHat, CentOS
 os_family: Debian, RedHat
-version: 2.6.0 
+version: 2.6.0
 release: 1
 minimum_version: 2018.3
 summary: bro formula
