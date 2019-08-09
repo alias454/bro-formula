@@ -81,7 +81,7 @@ pip-package-install-bro-pkg:
 bro-pkg-autoconfig:
   cmd.run:
     - name: bro-pkg autoconfig
-    - creates: /root/.bro-pkg/config # either .zkg or .bro-pkg
+    - creates: /root/.zkg/config # either .zkg or .bro-pkg
     - unless: echo $(which bro-pkg) |grep "no bro-pkg"
     - runas: root
     - require:
