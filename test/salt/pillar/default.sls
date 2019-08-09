@@ -3,7 +3,7 @@ bro:
   lookup:
     package:
     {% if grains['os_family'] == 'RedHat' %}
-      install_type: 'local'                         # Install type can be package or local (support for tarball not implemented) 
+      install_type: 'local'                         # Install type can be package or local (support for tarball not implemented)
       local_package:                                # Can be multiple packages like bro, broctl, broccoli etc.
         - pack_id: 'bro-full'
           package: 'Bro-2.6-195-Linux-x86_64'       # Custom package to be deployed
@@ -14,7 +14,7 @@ bro:
       repo_gpgkey: 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/repodata/repomd.xml.key'
       skip_verify: '0'
     {% elif grains['os_family'] == 'Debian' %}
-      install_type: 'package'                       # Install type can be package (support for tarball or local not implemented) 
+      install_type: 'package'                       # Install type can be package (support for tarball or local not implemented)
       use_repo: 'False'                             # Debian 9 does not require an external repo
       repo_baseurl: 'deb http://download.opensuse.org/repositories/network:/bro/Debian_8.0/'
       repo_gpgkey: 'http://download.opensuse.org/repositories/network:bro/Debian_8.0/Release.key'
@@ -28,7 +28,7 @@ bro:
       python_pip_pkg: 'python3-pip'         # Can be pip or pip3 but only gets installed if use_BroPKG == True
     {% endif %}
       python_pip_cmd: 'pip3'                 # Otherwise, the pip install is skipped and bro-pkg is not configured
-      addon_plugins:                         # List of plugins to install if bro-pkg is enabled 
+      addon_plugins:                         # List of plugins to install if bro-pkg is enabled
         - plugin: 'bro-af_packet-plugin'     # af_packet is required when use_afpacket == True
       MailTo: 'root@localhost'               # Recipient address for all emails sent out by Bro and BroControl
       SendMail: '/sbin/sendmail'             # Path to sendmail binary
@@ -52,11 +52,13 @@ bro:
       CfgDir: '/etc/bro'                     # Default config directory location for Debian
       ShareDir: '/usr/share/bro'             # Location of shared resources (site local)
     {% endif %}
-      mode: 'standalone'                     # Mode can be standalone or lb_cluster (load balanced cluster) 
+      mode: 'standalone'                     # Mode can be standalone or lb_cluster (load balanced cluster)
       use_pfring: 'False'                    # If pf_ring is installed set this to True. Must use "pf_ring" lb_method
       use_afpacket: 'True'                   # If you use AF_PACKET set this to True. Must use "custom" lb_method and use_BroPKG set to True
       lb_method: 'custom'                    # Load balancer type ("pf_ring" or "custom" are supported)
       lb_procs: '2'                          # Number of processors to run BRO workers with
+      logging:
+        use_rsyslog: 'False'                 # Enable rsyslog usage
       bpf:
         use_BPFconf: 'True'                  # Use Berkeley Packet Filter(BPF) on capture interfaces
         bpf_rules: []                        # Add custom BPF rules
@@ -65,7 +67,7 @@ bro:
         use_sendmail: 'False'                # Use sendmail(needs sendmail/postfix to be installed)
         relayhost: 'mail.domain.tld'         # Send email to a relay host
       interfaces:
-        ip_binary_path: '/sbin/ip'           # path to ip binary for managing 
+        ip_binary_path: '/sbin/ip'           # path to ip binary for managing
         management: 'eth0'                 # Management interface name
         capture:
           enable: 'False'

@@ -57,6 +57,8 @@ bro:
       use_afpacket: 'True'                   # If you use AF_PACKET set this to True. Must use "custom" lb_method and use_BroPKG set to True
       lb_method: 'custom'                    # Load balancer type ("pf_ring" or "custom" are supported)
       lb_procs: '2'                          # Number of processors to run BRO workers with
+      logging:
+        use_rsyslog: 'True'                  # Enable rsyslog usage
       bpf:
         use_BPFconf: 'True'                  # Use Berkeley Packet Filter(BPF) on capture interfaces
         bpf_rules: []                        # Add custom BPF rules
