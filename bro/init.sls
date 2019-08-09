@@ -6,5 +6,6 @@ include:
   - .bro-bpfconf
   - .bro-sendmail  
   - .bro-service
+  - .bro-syslog
   - .bro-bropkg
   - .bro-cron

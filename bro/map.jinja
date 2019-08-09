@@ -33,6 +33,13 @@
       'use_afpacket': 'False',
       'lb_method': 'pf_ring',
       'lb_procs': '1',
+      'logging':
+      {
+        'use_rsyslog': 'True',
+        'target': 'esnode00.alias454.local',
+        'port': '13514',
+        'protocol': 'tcp',
+      },
       'bpf':
       {
         'use_BPFconf': 'True',
@@ -48,7 +55,7 @@
       {
         'ip_binary_path': '/sbin/ip',
         'management': 'eth0',
-        'capture': 
+        'capture':
         {
           'device_names': 'eth1',
           'enable_tx': '0',
@@ -64,7 +71,7 @@
       'interfaces':
       {
         'management': 'eth0',
-        'capture': 
+        'capture':
         {
           'device_names': 'eth1',
           'enable_tx': '0',
@@ -100,7 +107,7 @@
     }
   }
 } %}
-{% set os_map = os_lookup.get(grains.os_family, {}) %} 
+{% set os_map = os_lookup.get(grains.os_family, {}) %}
 
 # update the default config with os specific settings
 {% do default_config.update(os_map) %}
