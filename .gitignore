@@ -1,0 +1,4 @@
+.kitchen
+Gemfile.lock
+*.rpm
+*.deb
