@@ -16,29 +16,13 @@ package-install-bro:
       - service: service-bro
 
 {% elif config.package.install_type == 'local' %}
-# Get package file from remote source and store it in salt://bro/files/
-{% if config.package.use_remote_pkg == 'True' %}
-{% for package in config.package.local_package %}
-{{ package.files_path }}/{{ package.package }}.{{ package.type }}:
-  file.managed:
-    - source: {{ package.source_url }}/{{ package.package }}.{{ package.type }}
-    - source_hash: {{ package.hash }}
-    - reload_modules: true
-    - user: root
-    - group: root
-    - mode: '0644'
-    - onlyif: ls {{ package.files_path }}/{{ package.package }}.{{ package.type }} |grep 'No such file'
-    - require_in:
-      - pkg: package-install-bro
-{% endfor %}
-{% endif %}
 
 # Install bro from a local package
 package-install-bro:
   pkg.installed:
     - sources:
     {% for package in config.package.local_package %}
-      - {{ package.name }}: salt://bro/files/{{ package.package }}.{{ package.type }}
+      - {{ package.name }}: {{ package.source }}/{{ package.package }}.{{ package.type }}
     {% endfor %}
     - refresh: True
     - skip_verify: {{ config.package.skip_verify }}
