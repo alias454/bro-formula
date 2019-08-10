@@ -31,7 +31,7 @@ bro:
     {% if grains['osfinger'] == 'Ubuntu-16.04' %} #Ubuntu 16 throws an error for now disabling this until fixed
       use_BroPKG: 'False'                    # Use bro-pkg to manage plugins (requird for plugins such as af_packet etc)
     {% else %}
-      use_BroPKG: 'False'                    # Use bro-pkg to manage plugins (requird for plugins such as af_packet etc)
+      use_BroPKG: 'True'                    # Use bro-pkg to manage plugins (requird for plugins such as af_packet etc)
     {% endif %}
       addon_plugins:                         # List of plugins to install if bro-pkg is enabled 
         - plugin: 'bro-af_packet-plugin'     # af_packet is required when use_afpacket == True

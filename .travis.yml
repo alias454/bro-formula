@@ -1,6 +1,7 @@
 sudo: required
 cache: bundler
 language: ruby
+dist: xenial
 
 services:
   - docker
