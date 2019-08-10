@@ -9,12 +9,17 @@ bro:
           package: 'Bro-2.6-195-Linux-x86_64'       # Custom package to be deployed
           name: 'bro'                               # Name of installed package
           type: 'rpm'                               # Type should be deb or rpm based on platform
+          files_path: '/tmp/kitchen/srv/salt/bro/files'  # Local file path for package storage
+          source_url: 'https://git.io/fj7g3'        # Short link to alias454 gists where test package lives
+          hash: 'a3ab22252d25a1b8cc50ca0e681cacee9bbd93472dd51ae741eafa23016d21cf'
+      use_remote_pkg: 'True'                        # Get local_package file from a remote source
       use_repo: 'False'                             # Bro can be installed from epel or a local rpm not just bro repos
       repo_baseurl: 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/'
       repo_gpgkey: 'http://download.opensuse.org/repositories/network:/bro/CentOS_7/repodata/repomd.xml.key'
       skip_verify: '0'
     {% elif grains['os_family'] == 'Debian' %}
       install_type: 'package'                       # Install type can be package (support for tarball or local not implemented) 
+      use_remote_pkg: 'False'                       # Get local_package file from a remote source
       use_repo: 'False'                             # Debian 9 does not require an external repo
       repo_baseurl: 'deb http://download.opensuse.org/repositories/network:/bro/Debian_8.0/'
       repo_gpgkey: 'http://download.opensuse.org/repositories/network:bro/Debian_8.0/Release.key'
