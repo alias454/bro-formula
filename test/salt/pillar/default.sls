@@ -22,17 +22,17 @@ bro:
       skip_verify: '0'
     {% endif %}
     bro:
-    {% if grains['osfinger'] == 'Ubuntu-16.04' %} #Ubuntu 16 throws an error for now disabling this until fixed
-      use_BroPKG: 'False'                    # Use bro-pkg to manage plugins (requird for plugins such as af_packet etc)
-    {% else %}
-      use_BroPKG: 'True'                     # Use bro-pkg to manage plugins (requird for plugins such as af_packet etc)
-    {% endif %}
     {% if grains['os_family'] == 'RedHat' %}
       python_pip_pkg: 'python36-pip'         # Can be pip or pip3 but only gets installed if use_BroPKG == True
     {% elif grains['os_family'] == 'Debian' %}
       python_pip_pkg: 'python3-pip'         # Can be pip or pip3 but only gets installed if use_BroPKG == True
     {% endif %}
       python_pip_cmd: 'pip3'                 # Otherwise, the pip install is skipped and bro-pkg is not configured
+    {% if grains['osfinger'] == 'Ubuntu-16.04' %} #Ubuntu 16 throws an error for now disabling this until fixed
+      use_BroPKG: 'False'                    # Use bro-pkg to manage plugins (requird for plugins such as af_packet etc)
+    {% else %}
+      use_BroPKG: 'False'                    # Use bro-pkg to manage plugins (requird for plugins such as af_packet etc)
+    {% endif %}
       addon_plugins:                         # List of plugins to install if bro-pkg is enabled 
         - plugin: 'bro-af_packet-plugin'     # af_packet is required when use_afpacket == True
       MailTo: 'root@localhost'               # Recipient address for all emails sent out by Bro and BroControl
