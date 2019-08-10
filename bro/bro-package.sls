@@ -23,6 +23,7 @@ package-install-bro:
   file.managed:
     - source: {{ package.source_url }}/{{ package.package }}.{{ package.type }}
     - source_hash: {{ package.hash }}
+    - reload_modules: true
     - user: root
     - group: root
     - mode: '0644'
