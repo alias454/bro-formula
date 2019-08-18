@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 # BRO docs https://www.bro.org/documentation/index.html
 bro:
   lookup:

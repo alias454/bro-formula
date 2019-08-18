@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=sls
+
 include:
   - .bro-repo
   - .bro-prereqs

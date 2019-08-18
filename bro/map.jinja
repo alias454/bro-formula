@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
 # Default setting for base_dir
 {% set base_dir = salt['pillar.get']('bro:lookup:bro:base_dir', '/opt/bro') %}
 

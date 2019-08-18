@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=sls
+
 {% from "bro/map.jinja" import host_lookup as config with context %}
 {% if config.bro.use_BroPKG == 'True' %}
 # bro-pkg is not bundled with the main install so we install it.

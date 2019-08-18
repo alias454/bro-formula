@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=sls
+
 {% from "bro/map.jinja" import host_lookup as config with context %}
 
 # Update the current path with bro path
